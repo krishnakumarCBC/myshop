@@ -1,3 +1,4 @@
+using MyShop.Web.Api.Brokers.DateTimes;
 using MyShop.Web.Api.Brokers.Loggings;
 using MyShop.Web.Api.Brokers.Storages;
 using MyShop.Web.Api.Services.Foundation.Products;
@@ -11,11 +12,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddTransient<ILoggingBroker, LoggingBroker>();
-builder.Services.AddTransient<IStorageBroker, StorageBroker>();
-builder.Services.AddTransient<IProductService, ProductService>();
-
 builder.Services.AddDbContext<StorageBroker>();
+
+ServiceBrokers(builder);
 
 var app = builder.Build();
 
@@ -33,3 +32,11 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+static void ServiceBrokers(WebApplicationBuilder builder)
+{
+    builder.Services.AddTransient<ILoggingBroker, LoggingBroker>();
+    builder.Services.AddTransient<IStorageBroker, StorageBroker>();
+    builder.Services.AddTransient<IDateTimeBroker, DateTimeBroker>();
+    builder.Services.AddTransient<IProductService, ProductService>();
+}
