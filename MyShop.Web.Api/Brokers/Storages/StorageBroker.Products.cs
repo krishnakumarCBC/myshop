@@ -5,26 +5,32 @@ namespace MyShop.Web.Api.Brokers.Storages
 {
     public partial class StorageBroker
     {
-        public DbSet<Product> products { get; set; }
-        public Task<Product> InsertProductAsync(Product product)
+        public DbSet<Product> Products { get; set; }
+        public async Task<Product> InsertProductAsync(Product product)
         {
-            throw new NotImplementedException();
+            this.Entry(product).State = EntityState.Added;
+            await this.SaveChangesAsync();
+            return product;
         }
         public IQueryable<Product> SelectAllProducts()
         {
-            throw new NotImplementedException();
+            return this.Products.AsQueryable();
         }
-        public ValueTask<Product> SelectProductByIdAsync(Guid productId)
+        public async ValueTask<Product> SelectProductByIdAsync(Guid productId)
         {
-            throw new NotImplementedException();
+            return await this.Products.FindAsync(productId);
         }
-        public ValueTask<Product> UpdateProductAsync(Product product)
+        public async ValueTask<Product> UpdateProductAsync(Product product)
         {
-            throw new NotImplementedException();
+            this.Entry(product).State = EntityState.Modified;
+            await this.SaveChangesAsync();
+            return product;
         }
-        public ValueTask<Product> DeleteProductAsync(Product product)
+        public async ValueTask<Product> DeleteProductAsync(Product product)
         {
-            throw new NotImplementedException();
+            this.Entry(product).State = EntityState.Deleted;
+            await this.SaveChangesAsync();
+            return product;
         }
     }
 }
