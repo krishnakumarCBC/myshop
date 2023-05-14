@@ -1,4 +1,4 @@
-﻿namespace MyShop.Web.Api.Models
+﻿namespace MyShop.Web.Api.Models.Products
 {
     public class Product : Audit
     {
