@@ -62,7 +62,7 @@ namespace MyShop.Web.Api.Controllers
                 return NotFound();
             }
             var deleteProduct = await _productService.RemoveProductAsync(currenProduct);
-            return NoContent();
+            return Ok(deleteProduct);
         }
     }
 }
