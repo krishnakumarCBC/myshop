@@ -1,4 +1,6 @@
+using MyShop.Web.Api.Brokers.Loggings;
 using MyShop.Web.Api.Brokers.Storages;
+using MyShop.Web.Api.Services.Foundation.Products;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +11,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddTransient<ILoggingBroker, LoggingBroker>();
 builder.Services.AddTransient<IStorageBroker, StorageBroker>();
+builder.Services.AddTransient<IProductService, ProductService>();
 
 builder.Services.AddDbContext<StorageBroker>();
 
