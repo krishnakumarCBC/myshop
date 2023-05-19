@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MyShop.Web.Api.Models.Stocks;
 
 namespace MyShop.Web.Api.Brokers.Storages
 {

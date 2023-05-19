@@ -12,7 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<StorageBroker>();
+
 
 ServiceBrokers(builder);
 
@@ -37,6 +37,8 @@ static void ServiceBrokers(WebApplicationBuilder builder)
 {
     builder.Services.AddTransient<ILoggingBroker, LoggingBroker>();
     builder.Services.AddTransient<IStorageBroker, StorageBroker>();
+    builder.Services.AddDbContext<StorageBroker>();
     builder.Services.AddTransient<IDateTimeBroker, DateTimeBroker>();
     builder.Services.AddTransient<IProductService, ProductService>();
+    builder.Services.AddTransient<IStockService, StockService>();
 }

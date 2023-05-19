@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyShop.Web.Api.Models.Products;
+using MyShop.Web.Api.Models.Stocks;
 using MyShop.Web.Api.Services.Foundation.Products;
 
 namespace MyShop.Web.Api.Controllers
@@ -10,16 +11,25 @@ namespace MyShop.Web.Api.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
+        private readonly IStockService _stockService;
 
-        public ProductsController(IProductService productService)
+        public ProductsController(IProductService productService, IStockService stockService)
         {
             _productService = productService;
+            _stockService = stockService;
         }
 
         [HttpGet]
         public IActionResult GetAllProducts()
         {
             _productService.RetrieveAllProducts().ToList();
+            return Ok();
+        }
+
+        [HttpGet]
+        public IActionResult GetAllStocks()
+        {
+            _stockService.RetrieveAllProductsStock().ToList();
             return Ok();
         }
 
@@ -34,11 +44,26 @@ namespace MyShop.Web.Api.Controllers
             return Ok(product);
         }
 
+        [HttpGet("{id}", Name = "GetSingleProductStock")]
+        public async ValueTask<IActionResult> GetProductStock(Guid id)
+        {
+            var productStock = await _stockService.RetrieveProductStockByIdAsync(id);
+            var product = ("GetSingleProduct", productStock.ProductId);
+            return Ok(product.ToString() + productStock.ToString());
+        }
+
         [HttpPost]
         public async ValueTask<IActionResult> PostProduct([FromBody]Product product)
         {
             var newproduct = await _productService.AddProductAsync(product);
             return Created("GetSingleProduct",newproduct);
+        }
+
+        [HttpPost]
+        public async ValueTask<IActionResult> PostProductStock([FromBody] Stock stock)
+        {
+            var newproduct = await _stockService.AddProductStockAsync(stock);
+            return Created("GetSingleProductStock", newproduct);
         }
 
         [HttpPut]
