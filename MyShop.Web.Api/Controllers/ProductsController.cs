@@ -78,6 +78,18 @@ namespace MyShop.Web.Api.Controllers
             return Ok(updatedProduct);
         }
 
+        [HttpPut]
+        public async ValueTask<IActionResult> PutProductsStock([FromBody] Stock stock)
+        {
+            var currenProduct = await _stockService.RetrieveProductStockByIdAsync(stock.Id);
+            if (currenProduct is null)
+            {
+                return NotFound();
+            }
+            var updatedProduct = await _stockService.ModifyProductStockAsync(stock);
+            return Ok(updatedProduct);
+        }
+
         [HttpDelete]
         public async ValueTask<IActionResult> DeleteProducts(Guid id)
         {
@@ -87,6 +99,18 @@ namespace MyShop.Web.Api.Controllers
                 return NotFound();
             }
             var deleteProduct = await _productService.RemoveProductAsync(currenProduct);
+            return Ok(deleteProduct);
+        }
+
+        [HttpDelete(Name = "DeleteProductStock")]
+        public async ValueTask<IActionResult> DeleteProductsStock(Guid id)
+        {
+            var currenProduct = await _stockService.RetrieveProductStockByIdAsync(id);
+            if (currenProduct is null)
+            {
+                return NotFound();
+            }
+            var deleteProduct = await _stockService.RemoveProductStockAsync(currenProduct);
             return Ok(deleteProduct);
         }
     }
